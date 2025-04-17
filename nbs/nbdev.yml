@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "fewsats-logger-py"
+  site-url: "https://Fewsats.github.io/fewsats-logger-py"
+  description: "Python Logger based on BetterStack"
+  repo-branch: main
+  repo-url: "https://github.com/Fewsats/fewsats-logger-py"
