@@ -1,0 +1,52 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "fewsats-logger-py",
+    "section": "",
+    "text": "This file will become your README and also the index of your documentation.",
+    "crumbs": [
+      "fewsats-logger-py"
+    ]
+  },
+  {
+    "objectID": "index.html#developer-guide",
+    "href": "index.html#developer-guide",
+    "title": "fewsats-logger-py",
+    "section": "Developer Guide",
+    "text": "Developer Guide\nIf you are new to using nbdev here are some useful pointers to get you started.\n\nInstall fewsats_logger_py in Development mode\n# make sure fewsats_logger_py package is installed in development mode\n$ pip install -e .\n\n# make changes under nbs/ directory\n# ...\n\n# compile to have changes apply to fewsats_logger_py\n$ nbdev_prepare",
+    "crumbs": [
+      "fewsats-logger-py"
+    ]
+  },
+  {
+    "objectID": "index.html#usage",
+    "href": "index.html#usage",
+    "title": "fewsats-logger-py",
+    "section": "Usage",
+    "text": "Usage\n\nInstallation\nInstall latest from the GitHub repository:\n$ pip install git+https://github.com/Fewsats/fewsats-logger-py.git\nor from conda\n$ conda install -c Fewsats fewsats_logger_py\nor from pypi\n$ pip install fewsats_logger_py\n\n\nDocumentation\nDocumentation can be found hosted on this GitHub repository’s pages. Additionally you can find package manager specific guidelines on conda and pypi respectively.",
+    "crumbs": [
+      "fewsats-logger-py"
+    ]
+  },
+  {
+    "objectID": "index.html#how-to-use",
+    "href": "index.html#how-to-use",
+    "title": "fewsats-logger-py",
+    "section": "How to use",
+    "text": "How to use\nFill me in please! Don’t forget code examples:\n\n1+1\n\n2",
+    "crumbs": [
+      "fewsats-logger-py"
+    ]
+  },
+  {
+    "objectID": "core.html",
+    "href": "core.html",
+    "title": "core",
+    "section": "",
+    "text": "source\n\nsetup_logging\n\n setup_logging ()\n\n*Configure logging to use Better Stack’s LogtailHandler with env context included automatically.\nThis should be called once at application startup.*",
+    "crumbs": [
+      "core"
+    ]
+  }
+]
