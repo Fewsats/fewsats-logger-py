@@ -22,8 +22,14 @@ Get the host & token by creating a new source at https://telemetry.betterstack.c
 
 3. **Initialize once** in your main file
    ```python
-    from fewsats_logger.core import setup_logging
-   setup_logging()
+   import os
+   from dotenv import load_dotenv
+   from fewsats_logger.core import setup_logging
+
+   load_dotenv()   
+   setup_logging(env=os.environ.get("ENV", "dev"),
+                 host=os.environ.get("BETTER_STACK_HOST"),
+                 token=os.environ.get("BETTER_STACK_SOURCE_TOKEN"))
    ```
 
 4. **Use standard logging** anywhere in your code
@@ -52,43 +58,26 @@ That's it. Logs will appear in Better Stack dashboard and console.
 
 ```python
 logger.info("Processing order", extra={
-    "order_id": "12345",
+    "external_id": "12345",
     "customer_id": "67890"
 })
 ```
 
-### Integration Examples
-
-#### FastAPI
+you can add it to multiple statements like this:
 
 ```python
-from fastapi import FastAPI
-from fewsats_logger import setup_logging
 
-setup_logging()
-app = FastAPI()
+with logtail.context(order={"external_id": "12345" }):
+    logger.info('Processing order')
+    # More code here ...
+    logger.info('Done.')
+
 ```
 
-#### Flask
+## Issues
 
-```python
-from flask import Flask
-from fewsats_logger import setup_logging
-
-setup_logging()
-app = Flask(__name__)
-```
-
-#### Command Line
-
-```python
-from fewsats_logger import setup_logging
-import logging
-
-def main():
-    setup_logging()
-    logger = logging.getLogger(__name__)
-    logger.info("Starting application")
-
-if __name__ == "__main__":
-    main()
+⚠️ **WARNING**: When using FastAPI, you may encounter server initialization issues:
+- The server may get blocked when started with `python server/main.py`
+- But works fine with `uvicorn server.main:app --reload --host 0.0.0.0`
+- This appears to be related to logging in the `__main__` scope
+- Avoid using logging statements directly in the main module scope or in `if __name__ == "__main__":` blocks

@@ -6,63 +6,35 @@
 __all__ = ['setup_logging']
 
 # %% ../nbs/00_core.ipynb 3
-from logtail import LogtailHandler
-import logging
-import os
+import logging.config
+from logtail import LogtailHandler, LogtailContext
+import sys
 
 # %% ../nbs/00_core.ipynb 4
-def setup_logging():
-    """
-    Configure logging to use Better Stack's LogtailHandler
-    with env context included automatically.
-    
-    This should be called once at application startup.
-    """
-    env = os.environ.get("ENV", "development")
-    source_token = os.environ.get("BETTER_STACK_SOURCE_TOKEN")
-    host = os.environ.get("BETTER_STACK_HOST")
-    
-    if not source_token or not host:
-        # If Better Stack credentials are not available, fall back to basic config
-        logging.basicConfig(level=logging.INFO)
-        logging.warning("Better Stack credentials not found, using basic logging config")
-        return
-    
-    # Configure the root logger first to set the minimum level
+def setup_logging(env, host, token):
     root_logger = logging.getLogger()
     root_logger.setLevel(logging.INFO)
     
-    # Remove any existing handlers to avoid duplicates
-    for handler in root_logger.handlers[:]:
-        root_logger.removeHandler(handler)
+    # Clear existing handlers to avoid duplicates if called multiple times
+    root_logger.handlers = []
     
-    # Add a console handler for local development
-    console = logging.StreamHandler()
-    root_logger.addHandler(console)
-    
-    try:
-        # Set up the Logtail handler
-        handler = LogtailHandler(
-            source_token=source_token,
-            host=host
+    # Add Logtail handler for cloud logging
+    logtail_handler = LogtailHandler(
+        source_token=token, 
+        host=host,
+        context=LogtailContext().context(
+            environment={'name': env}
         )
-        
-        # Override LogRecord factory to add env to all records
-        old_factory = logging.getLogRecordFactory()
-        def record_factory(*args, **kwargs):
-            record = old_factory(*args, **kwargs)
-            record.env = env
-            return record
-        logging.setLogRecordFactory(record_factory)
-        
-        # Add the handler to the root logger
-        root_logger.addHandler(handler)
-        
-        logging.info(f"Better Stack logging configured with env: {env}")
-    except Exception as e:
-        logging.error(f"Failed to configure Better Stack logging: {e}")
+    )
+    root_logger.addHandler(logtail_handler)
+    
 
-
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_formatter = logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    )
+    console_handler.setFormatter(console_formatter)
+    root_logger.addHandler(console_handler)
 
 # %% ../nbs/00_core.ipynb 5
 # If this file is run directly, test the logging
